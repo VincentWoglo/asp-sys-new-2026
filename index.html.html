@@ -1,0 +1,1522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Enterprise HPC Landing Page</title>
+  <style>
+    :root {
+      --page: #f5f7fa;
+      --surface: #ffffff;
+      --surface-2: #eef2f6;
+      --ink: #101828;
+      --text: #344054;
+      --muted: #667085;
+      --line: #d8dee8;
+      --teal: #009da4;
+      --teal-dark: #006b70;
+      --navy: #111a24;
+      --container: 1340px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--page);
+      color: var(--ink);
+      line-height: 1.5;
+      overflow-x: hidden;
+    }
+
+    img, video { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+    button { font-family: inherit; }
+
+    .container {
+      width: 100%;
+      max-width: var(--container);
+      margin-inline: auto;
+      padding-inline: 32px;
+    }
+
+    .nav-wrap {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(255,255,255,0.96);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav {
+      height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 32px;
+    }
+
+    .logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 700;
+      font-size: 22px;
+      letter-spacing: -0.03em;
+    }
+
+    .logo-mark {
+      width: 34px;
+      height: 34px;
+      background: var(--teal);
+      flex: 0 0 auto;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 34px;
+      font-size: 14px;
+      color: var(--text);
+    }
+
+    .nav-item { position: relative; }
+
+    .nav-links a {
+      position: relative;
+      padding: 28px 0;
+    }
+
+    .nav-trigger {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .dropdown-icon {
+      width: 10px;
+      height: 10px;
+      border-right: 1.8px solid currentColor;
+      border-bottom: 1.8px solid currentColor;
+      transform: rotate(45deg) translateY(-1px);
+      transition: transform 0.2s ease;
+      opacity: 0.72;
+    }
+
+    .nav-item:hover .dropdown-icon { transform: rotate(225deg) translateY(-1px); }
+
+    .nav-links > a::after,
+    .nav-trigger::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 20px;
+      width: 0;
+      height: 2px;
+      background: var(--teal);
+      transition: width 0.22s ease;
+    }
+
+    .nav-links a:hover { color: var(--teal); }
+    .nav-links > a:hover::after,
+    .nav-trigger:hover::after { width: 100%; }
+
+    .submenu {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      min-width: 230px;
+      background: #fff;
+      border: 1px solid var(--line);
+      box-shadow: 0 20px 44px rgba(16,24,40,0.12);
+      padding: 10px;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
+      z-index: 20;
+    }
+
+    .nav-item:hover .submenu {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    .submenu a {
+      display: block;
+      padding: 11px 12px;
+      color: var(--text);
+      font-size: 14px;
+      border-bottom: 1px solid #edf1f5;
+    }
+
+    .submenu a:last-child { border-bottom: 0; }
+    .submenu a::after { display: none; }
+    .submenu a:hover { background: #f4f8fc; color: var(--teal); }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 0 22px;
+      border: 1px solid var(--teal);
+      font-weight: 700;
+      font-size: 15px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, color 0.2s ease;
+    }
+
+    .btn-primary { background: var(--teal); color: #fff; }
+    .btn-secondary { background: #fff; color: var(--teal); }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 30px rgba(16,24,40,0.12);
+    }
+
+    .btn-primary:hover { background: var(--teal-dark); }
+    .btn-secondary:hover { background: #edf5ff; }
+
+    .eyebrow,
+    .index {
+      color: var(--teal);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    h1, h2, h3 {
+      font-weight: 500;
+      letter-spacing: -0.045em;
+      line-height: 1.02;
+    }
+
+    h1 { font-size: clamp(48px, 6.4vw, 52px); max-width: 1040px; }
+    h2 { font-size: clamp(36px, 4.4vw, 40px); max-width: 860px; }
+    h3 { font-size: clamp(26px, 2.45vw, 32px); }
+
+    .lead {
+      color: var(--text);
+      font-size: clamp(18px, 1.45vw, 16px);
+      line-height: 1.55;
+      max-width: 720px;
+    }
+
+    .copy {
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.65;
+    }
+
+    .section { padding: 68px 0; }
+    .section-tight { padding: 48px 0; }
+
+    .section-head {
+      display: grid;
+      grid-template-columns: 0.95fr 1.05fr;
+      gap: 42px;
+      align-items: end;
+      margin-bottom: 28px;
+    }
+
+    .section-head-actions {
+      display: grid;
+      gap: 20px;
+      justify-items: start;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .hero {
+      background: #ffffff;
+      border-bottom: 1px solid var(--line);
+      padding: 64px 0 0;
+    }
+
+    .hero-top {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 54px;
+      align-items: end;
+      padding-bottom: 38px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 22px;
+    }
+
+    .hero-media {
+      position: relative;
+      height: 620px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      background: #dfe4ea;
+    }
+
+    .hero-media video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      background: var(--surface);
+      border-left: 1px solid var(--line);
+      border-top: 1px solid var(--line);
+      margin-top: 18px;
+    }
+
+    .metric {
+      padding: 20px;
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      transition: background 0.2s ease;
+    }
+
+    .metric:hover { background: #f7fbff; }
+
+    .metric strong {
+      display: block;
+      font-size: clamp(34px, 3.7vw, 58px);
+      font-weight: 500;
+      line-height: 1;
+      letter-spacing: -0.055em;
+      margin-bottom: 8px;
+    }
+
+    .metric span {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .logo-band {
+      background: var(--surface);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .logo-band-inner {
+      display: grid;
+      grid-template-columns: 210px 1fr;
+      gap: 22px;
+      align-items: center;
+      padding: 22px 0;
+      overflow: hidden;
+      padding-inline: 32px;
+    }
+
+    .logo-title {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .client-marquee {
+      overflow: hidden;
+      border-left: 1px solid var(--line);
+      border-right: 1px solid var(--line);
+      mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+    }
+
+    .client-track {
+      display: flex;
+      width: max-content;
+      animation: logoScroll 26s linear infinite;
+    }
+
+    .client-marquee:hover .client-track { animation-play-state: paused; }
+    @keyframes logoScroll { to { transform: translateX(-50%); } }
+
+    .client-logo {
+      width: 210px;
+      height: 96px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #fff;
+      border-right: 1px solid var(--line);
+      padding: 18px 26px;
+      transition: background 0.2s ease, transform 0.22s ease;
+    }
+
+    .client-logo img {
+      width: 100%;
+      max-width: 170px;
+      height: 70px;
+      object-fit: contain;
+      filter: grayscale(100%);
+      opacity: 0.72;
+      transition: opacity 0.22s ease, filter 0.22s ease;
+    }
+
+    .client-logo:hover { background: #f8fbff; transform: translateY(-2px); }
+    .client-logo:hover img { filter: grayscale(0%); opacity: 1; }
+
+    .capability-editorial {
+      position: relative;
+      display: grid;
+      grid-template-columns: 0.92fr 1.08fr;
+      gap: 28px;
+      align-items: start;
+    }
+
+    .capability-copy-block {
+      position: sticky;
+      top: 104px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      padding: 34px;
+      min-height: 560px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .capability-copy-block h3 {
+      font-size: clamp(42px, 4.8vw, 76px);
+      line-height: 0.95;
+      letter-spacing: -0.06em;
+      margin-top: 18px;
+    }
+
+    .capability-copy-bottom {
+      display: grid;
+      gap: 18px;
+      margin-top: 42px;
+    }
+
+    .capability-outcome-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border-top: 1px solid var(--line);
+      padding-top: 20px;
+      gap: 18px;
+    }
+
+    .capability-outcome-row strong {
+      display: block;
+      font-size: 28px;
+      font-weight: 500;
+      letter-spacing: -0.04em;
+      margin-bottom: 4px;
+    }
+
+    .capability-outcome-row span {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.35;
+    }
+
+    .capability-media-stack { display: grid; gap: 18px; }
+
+    .capability-hero-card {
+      position: relative;
+      min-height: 440px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      background: var(--surface);
+    }
+
+    .capability-hero-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s ease;
+    }
+
+    .capability-hero-card:hover img { transform: scale(1.035); }
+
+    .capability-hero-badge {
+      position: absolute;
+      left: 24px;
+      bottom: 24px;
+      background: rgba(255,255,255,0.94);
+      border-left: 4px solid var(--teal);
+      padding: 20px;
+      max-width: 440px;
+    }
+
+    .capability-hero-badge strong {
+      display: block;
+      font-size: 24px;
+      font-weight: 500;
+      letter-spacing: -0.03em;
+      margin-bottom: 6px;
+    }
+
+    .capability-services-editorial {
+      display: grid;
+      gap: 1px;
+      background: var(--line);
+      border: 1px solid var(--line);
+    }
+
+    .capability-service-line {
+      display: grid;
+      grid-template-columns: 90px 1fr 170px;
+      gap: 24px;
+      align-items: center;
+      background: var(--surface);
+      padding: 24px;
+      transition: background 0.22s ease, transform 0.22s ease, box-shadow 0.22s ease;
+    }
+
+    .capability-service-line:hover {
+      background: #f8fbff;
+      transform: translateX(-6px);
+      box-shadow: 0 18px 38px rgba(16,24,40,0.08);
+      position: relative;
+      z-index: 2;
+    }
+
+    .capability-service-index {
+      color: #c6ceda;
+      font-size: 42px;
+      line-height: 1;
+      font-weight: 500;
+      letter-spacing: -0.06em;
+    }
+
+    .capability-service-line h3 {
+      font-size: clamp(30px, 2.5vw, 44px);
+      margin-bottom: 8px;
+    }
+
+    .capability-service-tags {
+      display: grid;
+      gap: 8px;
+      justify-items: end;
+    }
+
+    .capability-service-tags span {
+      display: inline-flex;
+      border: 1px solid var(--line);
+      padding: 7px 10px;
+      color: var(--teal);
+      background: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .split-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border: 1px solid var(--line);
+      background: var(--surface);
+    }
+
+    .split-card { padding: 42px; }
+    .split-card + .split-card { border-left: 1px solid var(--line); background: #f0f4f8; }
+    .split-card h3 { margin-bottom: 24px; }
+
+    .list {
+      display: grid;
+      gap: 12px;
+      list-style: none;
+      margin-top: 20px;
+    }
+
+    .list li {
+      padding-top: 12px;
+      border-top: 1px solid var(--line);
+      color: var(--text);
+      font-size: 17px;
+    }
+
+    .workload-grid,
+    .partner-grid,
+    .case-grid {
+      display: grid;
+      gap: 1px;
+      background: var(--line);
+      border: 1px solid var(--line);
+    }
+
+    .workload-grid { grid-template-columns: repeat(4, 1fr); }
+    .partner-grid { grid-template-columns: repeat(3, 1fr); }
+    .case-grid { grid-template-columns: repeat(3, 1fr); gap: 24px; background: transparent; border: 0; }
+
+    .workload-card,
+    .partner-card,
+    .case-card {
+      background: var(--surface);
+      transition: transform 0.24s ease, box-shadow 0.24s ease, background 0.24s ease;
+    }
+
+    .workload-card:hover,
+    .partner-card:hover,
+    .case-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 22px 44px rgba(16,24,40,0.11);
+      position: relative;
+      z-index: 2;
+    }
+
+    .workload-card,
+    .case-card-link {
+      display: flex;
+      flex-direction: column;
+      color: inherit;
+    }
+
+    .workload-card img,
+    .case-card img {
+      width: 100%;
+      height: 210px;
+      object-fit: cover;
+    }
+
+    .workload-card div,
+    .case-content { padding: 22px; }
+
+    .workload-card h3,
+    .case-card h3 {
+      font-size: 20px;
+      margin: 12px 0;
+    }
+
+    .inline-cta,
+    .workload-cta,
+    .case-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 18px;
+      color: var(--teal);
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    .inline-cta::after,
+    .workload-cta::after,
+    .case-cta::after {
+      content: "→";
+      transition: transform 0.2s ease;
+    }
+
+    .workload-card:hover .workload-cta::after,
+    .case-card:hover .case-cta::after,
+    .inline-cta:hover::after { transform: translateX(4px); }
+
+    .proof-band {
+      background: var(--navy);
+      color: #fff;
+      padding: 70px 0;
+    }
+
+    .proof-band .lead,
+    .proof-band .copy { color: #cbd5e1; }
+    .proof-band .eyebrow { color: var(--teal); }
+
+    .proof-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: rgba(255,255,255,0.16);
+      border: 1px solid rgba(255,255,255,0.16);
+      margin-top: 30px;
+    }
+
+    .proof-card {
+      background: var(--navy);
+      padding: 26px;
+      min-height: 280px;
+    }
+
+    .proof-card h3 { font-size: 20px; margin-bottom: 16px; }
+
+    .process-layout {
+      display: grid;
+      grid-template-columns: 360px 1fr;
+      border: 1px solid var(--line);
+      background: var(--surface);
+    }
+
+    .tabs { border-right: 1px solid var(--line); }
+
+    .tab-btn {
+      width: 100%;
+      border: 0;
+      border-bottom: 1px solid var(--line);
+      background: transparent;
+      display: grid;
+      gap: 4px;
+      text-align: left;
+      padding: 18px;
+      cursor: pointer;
+      color: var(--ink);
+      transition: background 0.2s ease;
+    }
+
+    .tab-btn:hover { background: #f7fbff; }
+    .tab-btn.active { background: #e9f2fb; border-left: 5px solid var(--teal); }
+    .tab-btn strong { font-size: 20px; font-weight: 500; letter-spacing: -0.02em; }
+    .tab-btn span { color: var(--muted); font-size: 14px; line-height: 1.5; }
+
+    .process-media {
+      position: relative;
+      min-height: 600px;
+      background: #dfe4ea;
+      overflow: hidden;
+    }
+
+    .process-media::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(16,24,40,0.08), rgba(16,24,40,0.28));
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .process-media video,
+    .process-media > img {
+      width: 100%;
+      height: 600px;
+      object-fit: cover;
+      filter: saturate(0.92) contrast(1.04);
+    }
+
+    .process-media > img {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      transition: opacity 0.35s ease;
+    }
+
+    .video-play {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 86px;
+      height: 86px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.96);
+      border: 1px solid var(--line);
+      display: grid;
+      place-items: center;
+      box-shadow: 0 16px 34px rgba(16,24,40,0.16);
+      z-index: 3;
+      cursor: pointer;
+      transform: translate(-50%, -50%);
+      transition: box-shadow 0.22s ease, background 0.22s ease;
+    }
+
+    .video-play:hover { background: #fff; box-shadow: 0 22px 46px rgba(16,24,40,0.22); }
+
+    .video-play::before {
+      content: "";
+      width: 0;
+      height: 0;
+      border-top: 12px solid transparent;
+      border-bottom: 12px solid transparent;
+      border-left: 18px solid var(--teal);
+      margin-left: 5px;
+    }
+
+    .process-copy {
+      position: absolute;
+      left: 24px;
+      right: 24px;
+      bottom: 24px;
+      max-width: 620px;
+      background: rgba(255,255,255,0.96);
+      border-left: 4px solid var(--teal);
+      padding: 20px;
+      z-index: 3;
+    }
+
+    .process-copy h3 { margin-bottom: 10px; }
+
+    .partner-card {
+      min-height: 120px;
+      display: grid;
+      place-items: center;
+      padding: 18px;
+    }
+
+    .partner-card img {
+      width: 100%;
+      max-width: 120px;
+      height: 52px;
+      object-fit: contain;
+      filter: grayscale(100%);
+      opacity: 0.82;
+      transition: opacity 0.2s ease, filter 0.2s ease;
+    }
+
+    .partner-card:hover img { opacity: 1; filter: grayscale(0%); }
+
+    .award-panel,
+    .cert-panel {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      padding: 28px;
+    }
+
+    .award-list {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-top: 24px;
+    }
+
+    .award-item {
+      display: grid;
+      grid-template-columns: 52px 1fr;
+      gap: 14px;
+      align-items: center;
+      padding: 12px;
+      border: 1px solid var(--line);
+      background: #fff;
+      transition: transform 0.22s ease, box-shadow 0.22s ease;
+    }
+
+    .award-item:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 32px rgba(16,24,40,0.08);
+    }
+
+    .award-logo {
+      width: 52px;
+      height: 52px;
+      display: grid;
+      place-items: center;
+      background: #f2f5f8;
+      border: 1px solid var(--line);
+      overflow: hidden;
+    }
+
+    .award-logo img {
+      width: 26px;
+      height: 26px;
+      object-fit: contain;
+    }
+
+    .award-item strong {
+      display: block;
+      font-size: 16px;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      margin-bottom: 2px;
+    }
+
+    .award-item span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .cert-panel {
+      display: grid;
+      grid-template-columns: 0.8fr 1.2fr;
+      gap: 28px;
+      align-items: center;
+      background: var(--teal);
+      margin-top: 28px;
+    }
+
+    .agency-box {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      align-content: start;
+    }
+
+    .agency-logo {
+      width: 100%;
+      min-height: 92px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--line);
+      background: #fff;
+      padding: 18px;
+    }
+
+    .agency-logo img {
+      width: 100%;
+      max-width: 200px;
+      height: 70px;
+      object-fit: contain;
+    }
+
+    .case-card { border: 1px solid var(--line); }
+
+    .case-card small {
+      color: var(--teal);
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .booking {
+      background: var(--surface);
+      border-top: 1px solid var(--line);
+    }
+
+    .booking-grid {
+      display: grid;
+      grid-template-columns: 0.95fr 1.05fr;
+      border: 1px solid var(--line);
+      background: var(--surface);
+    }
+
+    .booking-copy { padding: 42px; }
+
+    .calendar-embed {
+      min-height: 560px;
+      background: #111a24;
+      border-left: 1px solid var(--line);
+      display: grid;
+      place-items: center;
+      padding: 28px;
+    }
+
+    .calendar-box {
+      width: 100%;
+      max-width: 500px;
+      min-height: 450px;
+      background: #fff;
+      border: 1px solid var(--line);
+      box-shadow: 0 18px 44px rgba(16,24,40,0.08);
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+    }
+
+    .calendar-top,
+    .calendar-bottom { padding: 22px; }
+    .calendar-top { border-bottom: 1px solid var(--line); }
+    .calendar-bottom { border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; }
+
+    .calendar-top strong {
+      display: block;
+      font-size: 22px;
+      font-weight: 500;
+      letter-spacing: -0.03em;
+      margin-bottom: 4px;
+    }
+
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 8px;
+      padding: 22px;
+      align-content: start;
+    }
+
+    .calendar-grid span {
+      aspect-ratio: 1;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .calendar-grid .active-day {
+      background: var(--teal);
+      border-color: var(--teal);
+      color: #fff;
+    }
+
+    .site-footer {
+      background: var(--navy);
+      color: #fff;
+      padding: 56px 0 32px;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.2fr repeat(3, 1fr);
+      gap: 32px;
+      padding-bottom: 30px;
+      border-bottom: 1px solid rgba(255,255,255,0.14);
+    }
+
+    .footer-brand .logo-mark { background: #fff; }
+
+    .footer-brand p {
+      color: #cbd5e1;
+      margin-top: 18px;
+      max-width: 380px;
+    }
+
+    .footer-col h4 {
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 18px;
+      color: #fff;
+    }
+
+    .footer-col a {
+      display: block;
+      color: #cbd5e1;
+      margin-bottom: 12px;
+      font-size: 15px;
+      transition: color 0.2s ease;
+    }
+
+    .footer-col a:hover { color: #fff; }
+
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      gap: 24px;
+      flex-wrap: wrap;
+      color: #94a3b8;
+      font-size: 14px;
+      padding-top: 18px;
+    }
+
+    @media (max-width: 1100px) {
+      .hero-top,
+      .section-head,
+      .logo-band-inner,
+      .capability-editorial,
+      .capability-service-line,
+      .split-grid,
+      .process-layout,
+      .cert-panel,
+      .booking-grid,
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .metrics,
+      .workload-grid,
+      .partner-grid,
+      .proof-grid,
+      .case-grid,
+      .award-list,
+      .agency-box {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .capability-copy-block { position: static; min-height: auto; }
+      .split-card + .split-card,
+      .tabs,
+      .calendar-embed { border-left: 0; border-right: 0; }
+    }
+
+    @media (max-width: 760px) {
+      .container { padding-inline: 22px; }
+      .nav-links, .nav .btn { display: none; }
+      .section { padding: 58px 0; }
+      .section-tight { padding: 44px 0; }
+      .hero { padding-top: 48px; }
+      .hero-media { height: auto; }
+      .hero-media video { height: 420px; }
+      .metrics,
+      .workload-grid,
+      .partner-grid,
+      .proof-grid,
+      .case-grid,
+      .award-list,
+      .agency-box,
+      .capability-outcome-row {
+        grid-template-columns: 1fr;
+      }
+      .process-media video,
+      .process-media > img { height: 460px; }
+      .process-copy { position: static; width: 100%; max-width: none; }
+      .split-card, .award-panel, .cert-panel, .booking-copy { padding: 28px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="nav-wrap">
+    <div class="container nav">
+      <a class="logo" href="#"><span class="logo-mark"></span>Aspen Systems</a>
+      <nav class="nav-links">
+        <div class="nav-item">
+          <a class="nav-trigger" href="#capabilities">Services <span class="dropdown-icon"></span></a>
+          <div class="submenu">
+            <a href="#capabilities">Cluster Updates</a>
+            <a href="#capabilities">Managed Services</a>
+            <a href="#capabilities">HPC Training</a>
+            <a href="#capabilities">On-Site Services</a>
+          </div>
+        </div>
+        <div class="nav-item">
+          <a class="nav-trigger" href="#process">Resources <span class="dropdown-icon"></span></a>
+          <div class="submenu">
+            <a href="#process">Discovery</a>
+            <a href="#process">Architecture</a>
+            <a href="#process">Deployment</a>
+            <a href="#process">Support</a>
+          </div>
+        </div>
+        <a href="#awards">Shop Servers</a>
+        <a href="#cases">Customer Success</a>
+        <a href="#partners">Blog</a>
+        <a href="#contact">Support</a>
+      </nav>
+      <a class="btn btn-secondary" href="#contact">Talk to Sales Specialist</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container">
+        <div class="hero-top">
+          <div>
+            <div class="eyebrow">Done For You HPC Solutions</div>
+            <h1>Order Your Customized HPC Cluster & Ai Solutions</h1>
+          </div>
+          <div>
+            <p class="lead">For 43+ years, we’ve designed, deployed, integrated, and supported HPC systems for enterprise AI, simulation, research, and government organizations.</p>
+            <div class="hero-actions">
+              <a class="btn btn-primary" href="#contact">Talk To a Sales Specialist</a>
+              <a class="btn btn-secondary" href="#cases">View Case Studies</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-media">
+          <video autoplay muted loop playsinline>
+            <source src="https://www.aspsys.com/wp-content/themes/aspen2021/assets/video/ASPEN_SYSTEMS_HERO_LANDING_PAGE_MONTAGE_V5_Compressed.mp4" type="video/mp4">
+          </video>
+        </div>
+
+        <!-- <div class="metrics" aria-label="Enterprise credibility metrics">
+          <div class="metric"><strong>43+</strong><span>Years supporting enterprise infrastructure</span></div>
+          <div class="metric"><strong>20+</strong><span>Awards and recognitions earned</span></div>
+          <div class="metric"><strong>400G</strong><span>Low-latency networking options</span></div>
+          <div class="metric"><strong>99.99%</strong><span>Target uptime architecture</span></div>
+          <div class="metric"><strong>24/7</strong><span>Enterprise support model</span></div>
+        </div> -->
+      </div>
+    </section>
+
+    <section class="logo-band">
+      <div class="container logo-band-inner">
+        <div class="logo-title">Trusted by known organizations</div>
+        <div class="client-marquee">
+          <div class="client-track">
+            <div class="client-logo"><img src="https://www.aspsys.com/wp-content/uploads/2022/02/general-dynamics-logo.jpg" alt="General Dynamics Logo"></div>
+            <div class="client-logo"><img src="https://www.nasa.gov/wp-content/themes/nasa/assets/images/nasa-logo.svg" alt="Nasa logo"></div>
+            <div class="client-logo"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/NOAA_logo.svg/500px-NOAA_logo.svg.png" alt="AMD"></div>
+            <div class="client-logo"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Seal_of_the_United_States_Department_of_War_%282025%29.svg/500px-Seal_of_the_United_States_Department_of_War_%282025%29.svg.png" alt="Intel"></div>
+            <div class="client-logo"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Lockheed_Martin_logo_%282%29.svg/500px-Lockheed_Martin_logo_%282%29.svg.png" alt="AWS"></div>
+            <div class="client-logo"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/General_Atomics_Aeronautical_Systems_logo.svg/500px-General_Atomics_Aeronautical_Systems_logo.svg.png" alt="Microsoft"></div>
+            <div class="client-logo"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Seal_of_the_United_States_Department_of_Commerce.svg/500px-Seal_of_the_United_States_Department_of_Commerce.svg.png" alt="Lenovo"></div>
+            <div class="client-logo"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Raytheon.svg/500px-Raytheon.svg.png" alt="Red Hat"></div>
+            <div class="client-logo"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/LANL_Logo.png/500px-LANL_Logo.png" alt="NVIDIA"></div>
+            <div class="client-logo"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/MIT_Logo_and_Wordmark.svg/250px-MIT_Logo_and_Wordmark.svg.png" alt="Dell"></div>
+            <div class="client-logo"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Mark_of_the_United_States_Army.svg/500px-Mark_of_the_United_States_Army.svg.png" alt="AMD"></div>
+            <div class="client-logo"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Harvard_University_coat_of_arms.svg/330px-Harvard_University_coat_of_arms.svg.png" alt="Intel"></div>
+            <div class="client-logo"><img src="https://upload.wikimedia.org/wikipedia/commons/4/42/CSRA_Logo.png" alt="AWS"></div>
+            <div class="client-logo"><img src="https://www.aspsys.com/wp-content/uploads/2026/05/Johns-Hopkins-University-Logo-Vector.svg" alt="Microsoft"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- <section id="capabilities" class="section">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="eyebrow">What we do</div>
+            <h2>Enterprise HPC infrastructure delivered end-to-end.</h2>
+          </div>
+          <p class="lead">A unified delivery model for enterprise AI, simulation, analytics, and high-performance computing environments.</p>
+        </div>
+
+        <div class="capability-editorial">
+          <article class="capability-copy-block">
+            <div>
+              <div class="eyebrow">Built as a system</div>
+              <h3>From strategy to infrastructure that performs.</h3>
+            </div>
+
+            <div class="capability-copy-bottom">
+              <p class="copy">HPC projects become expensive when design, deployment, integration, and support happen in isolation. We connect each stage into one accountable delivery model.</p>
+
+              <div class="capability-outcome-row">
+                <div><strong>43+</strong><span>Years in enterprise infrastructure</span></div>
+                <div><strong>4</strong><span>Core delivery capabilities</span></div>
+                <div><strong>1</strong><span>Connected operating model</span></div>
+              </div>
+            </div>
+          </article>
+
+          <div class="capability-media-stack">
+            <article class="capability-hero-card">
+              <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1800&q=85" alt="Enterprise HPC infrastructure planning">
+              <div class="capability-hero-badge">
+                <strong>Engineered for production environments.</strong>
+                <p class="copy">Compute, storage, network, software, workflows, and support planned as one infrastructure system.</p>
+              </div>
+            </article>
+
+            <div class="capability-services-editorial">
+              <article class="capability-service-line">
+                <div class="capability-service-index">01</div>
+                <div>
+                  <h3>Design</h3>
+                  <p class="copy">Architecture planning around workload demand, capacity, security, storage, and network performance.</p>
+                </div>
+                <div class="capability-service-tags"><span>Blueprint</span><span>Planning</span></div>
+              </article>
+
+              <article class="capability-service-line">
+                <div class="capability-service-index">02</div>
+                <div>
+                  <h3>Deployment</h3>
+                  <p class="copy">Validated rollout with configuration, benchmarking, hardening, documentation, and handoff.</p>
+                </div>
+                <div class="capability-service-tags"><span>Buildout</span><span>Validation</span></div>
+              </article>
+
+              <article class="capability-service-line">
+                <div class="capability-service-index">03</div>
+                <div>
+                  <h3>Integration</h3>
+                  <p class="copy">Connect cloud, identity, applications, monitoring, automation, data pipelines, and workflows.</p>
+                </div>
+                <div class="capability-service-tags"><span>Systems</span><span>Data</span></div>
+              </article>
+
+              <article class="capability-service-line">
+                <div class="capability-service-index">04</div>
+                <div>
+                  <h3>Support</h3>
+                  <p class="copy">Ongoing monitoring, optimization, troubleshooting, lifecycle planning, and enterprise support.</p>
+                </div>
+                <div class="capability-service-tags"><span>Lifecycle</span><span>24/7</span></div>
+              </article>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section> -->
+
+    <!-- <section class="section-tight">
+      <div class="container">
+        <div class="split-grid">
+          <div class="split-card">
+            <div class="eyebrow">The problem</div>
+            <h3>Legacy infrastructure slows modern enterprise workloads.</h3>
+            <p class="copy">Compute environments often grow in fragments, creating bottlenecks across storage, networking, software, and support.</p>
+            <ul class="list">
+              <li>Delayed simulations and research cycles</li>
+              <li>Disconnected tools and workflows</li>
+              <li>Reactive support and unpredictable performance</li>
+            </ul>
+          </div>
+          <div class="split-card">
+            <div class="eyebrow">The solution</div>
+            <h3>A unified HPC operating model.</h3>
+            <p class="copy">We turn infrastructure complexity into a stable, scalable, production-ready environment.</p>
+            <ul class="list">
+              <li>Architecture mapped to workload demand</li>
+              <li>Deployment validated before handoff</li>
+              <li>Support aligned with enterprise operations</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section> -->
+
+    <section class="section">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="eyebrow">Services we offer</div>
+            <h2>Enterprise HPC services built for modern infrastructure environments.</h2>
+          </div>
+          <div class="section-head-actions">
+            <p class="lead">Purpose-built infrastructure services for enterprise AI, accelerated computing, simulation, research, and operational scale.</p>
+            <div class="actions">
+              <a class="btn btn-primary" href="#contact">Talk to Sales Specialist</a>
+              <a class="btn btn-secondary" href="#cases">View Customer Success</a>
+            </div>
+          </div>
+        </div>
+        <div class="workload-grid">
+          <a class="workload-card" href="#contact"><img src="https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?auto=format&fit=crop&w=900&q=85" alt="Infrastructure architecture"><div><h3>Cluster Updates</h3><p class="copy">Design compute, storage, networking, cooling, and software environments around workload demand.</p><span class="workload-cta">Learn more</span></div></a>
+          <a class="workload-card" href="#contact"><img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=900&q=85" alt="HPC deployment"><div><h3>Managed Services</h3><p class="copy">Production-ready rollout with configuration, benchmarking, validation, and operational handoff.</p><span class="workload-cta">Learn more</span></div></a>
+          <a class="workload-card" href="#contact"><img src="https://images.unsplash.com/photo-1518186285589-2f7649de83e0?auto=format&fit=crop&w=900&q=85" alt="Systems integration"><div><h3>Advanced HPC Training</h3><p class="copy">Connect cloud platforms, identity, monitoring, automation, and enterprise workflows.</p><span class="workload-cta">Learn more</span></div></a>
+          <a class="workload-card" href="#contact"><img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=900&q=85" alt="Enterprise support"><div><h3>Professional On-Site Service</h3><p class="copy">Long-term optimization, monitoring, troubleshooting, lifecycle planning, and operational support.</p><span class="workload-cta">Learn more</span></div></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="proof-band">
+      <div class="container">
+        <div class="section-head">
+          <div><div class="eyebrow">What We Do</div><h2>Built for Performance & Backed for The Long Run</h2></div>
+          <p class="lead">A technical foundation for reliability, performance, and long-term operational maturity.</p>
+        </div>
+        <div class="proof-grid">
+          <article class="proof-card"><h3>Design</h3><p class="copy">Expert architecture and custom system design tailored to your workload and goals.</p></article>
+          <article class="proof-card"><h3>Integration</h3><p class="copy">Precision integration of industry-leading compute, networking, storage, and software technologies.</p></article>
+          <article class="proof-card"><h3>Deploy</h3><p class="copy">Seamless deployment and testing to deliver full performance from day one, every time. </p></article>
+          <article class="proof-card"><h3>Support</h3><p class="copy">Responsive support and service to keep your systems running at peak performance, always. </p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="process" class="section">
+      <div class="container">
+        <div class="section-head">
+          <div><div class="eyebrow">Our process</div><h2>Our process from start to finish.</h2></div>
+          <div class="section-head-actions">
+            <p class="lead">A clear path from discovery and architecture to deployment, integration, and long-term support.</p>
+            <div class="actions">
+              <a class="btn btn-primary" href="#contact">Talk to Sales Specialist</a>
+              <a class="btn btn-secondary" href="#cases">View Customer Success</a>
+            </div>
+          </div>
+        </div>
+        <div class="process-layout">
+          <div class="tabs">
+            <button class="tab-btn active" data-tab="0"><strong>01. Discovery</strong><span>Define goals, workloads, risks, and constraints.</span></button>
+            <button class="tab-btn" data-tab="1"><strong>02. Architecture</strong><span>Map the infrastructure blueprint.</span></button>
+            <button class="tab-btn" data-tab="2"><strong>03. Deployment</strong><span>Build, configure, test, and validate.</span></button>
+            <button class="tab-btn" data-tab="3"><strong>04. Integration</strong><span>Connect systems, data, users, and workflows.</span></button>
+            <button class="tab-btn" data-tab="4"><strong>05. Support</strong><span>Optimize, monitor, and improve over time.</span></button>
+          </div>
+          <div class="process-media">
+            <video id="processVideo" muted loop playsinline preload="metadata" poster="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1400&q=85">
+              <source src="https://cdn.coverr.co/videos/coverr-server-room-5599/1080p.mp4#t=0.1" type="video/mp4">
+            </video>
+            <img id="processImage" src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1400&q=85" alt="Process preview">
+            <button class="video-play" aria-label="Play process video" type="button"></button>
+            <!-- <div class="process-copy">
+              <h3 id="processTitle">Discovery and requirements mapping.</h3>
+              <p id="processText" class="copy">We define business goals, workloads, stakeholders, risks, constraints, and success criteria before infrastructure decisions are made.</p>
+            </div> -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- <section id="awards" class="section-tight">
+      <div class="container">
+        <div class="award-panel">
+          <div><div class="eyebrow">Awards & recognition</div><h2>20+ awards across infrastructure, support, and systems delivery.</h2></div>
+          <div class="award-list">
+            <div class="award-item"><div class="award-logo"><img style="width: 44px; height: 44px;" src="https://findvectorlogo.com/wp-content/uploads/2022/01/inc-5000-vector-logo-2022-xs.png" alt="Award logo"></div><div><strong>Inc 5000 Fastest Growing Business</strong><span>2024</span></div></div>
+            <div class="award-item"><div class="award-logo"><img style="width: 44px; height: 44px;" src="https://findvectorlogo.com/wp-content/uploads/2022/01/inc-5000-vector-logo-2022-xs.png" alt="Award logo"></div><div><strong>Inc 5000 Fastest Growing Business</strong><span>2021</span></div></div>
+            <div class="award-item"><div class="award-logo"><img style="width: 44px; height: 44px;" src="https://findvectorlogo.com/wp-content/uploads/2022/01/inc-5000-vector-logo-2022-xs.png" alt="Award logo"></div><div><strong>Inc 5000 Fastest Growing Business</strong><span>2020</span></div></div>
+            <div class="award-item"><div class="award-logo"><img style="width: 44px; height: 44px;" src="https://findvectorlogo.com/wp-content/uploads/2022/01/inc-5000-vector-logo-2022-xs.png" alt="Award logo"></div><div><strong>Inc 5000 Fastest Growing Business</strong><span>2019</span></div></div>
+            <div class="award-item"><div class="award-logo"><img style="width: 44px; height: 44px;" src="https://findvectorlogo.com/wp-content/uploads/2022/01/inc-5000-vector-logo-2022-xs.png" alt="Award logo"></div><div><strong>AMD Platinum</strong><span>2008</span></div></div>
+            <div class="award-item"><div class="award-logo"><img style="width: 44px; height: 44px;" src="https://findvectorlogo.com/wp-content/uploads/2022/01/inc-5000-vector-logo-2022-xs.png" alt="Award logo"></div><div><strong>Lockheed Martin Start Supplier</strong><span>2007</span></div></div>
+            <div class="award-item"><div class="award-logo"><img style="width: 44px; height: 44px;" src="https://findvectorlogo.com/wp-content/uploads/2022/01/inc-5000-vector-logo-2022-xs.png" alt="Award logo"></div><div><strong>Top 250 Private Companies</strong><span>2006</span></div></div>
+            <div class="award-item"><div class="award-logo"><img style="width: 44px; height: 44px;" src="https://findvectorlogo.com/wp-content/uploads/2022/01/inc-5000-vector-logo-2022-xs.png" alt="Award logo"></div><div><strong>Top 250 Private Companies</strong><span>2005</span></div></div>
+            <div class="award-item"><div class="award-logo"><img style="width: 44px; height: 44px;" src="https://findvectorlogo.com/wp-content/uploads/2022/01/inc-5000-vector-logo-2022-xs.png" alt="Award logo"></div><div><strong>Top 250 Private Companies</strong><span>2003</span></div></div>
+
+          </div>
+        </div>
+
+        <div class="cert-panel">
+          <div>
+            <div class="eyebrow" style="color: #ffffff;">Government certification</div>
+            <h2 style="font-size:clamp(30px,3.2vw,52px); color: #ffffff;">Public-sector certification logos.</h2>
+            <p class="copy" style="margin-top:18px; color: #ffffff;">Show only the agency logos connected to the certification, without overloading the section with certification details.</p>
+          </div>
+          <div class="agency-box">
+            <div class="agency-logo"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/US-GeneralServicesAdministration-Logo.svg/500px-US-GeneralServicesAdministration-Logo.svg.png" alt="Department of Energy"></div>
+            <div class="agency-logo"><img src="https://www.aspsys.com/wp-content/uploads/2026/01/pri-iso.jpg" alt="Department of Defense"></div>
+            <div class="agency-logo"><img src="https://www.aspsys.com/wp-content/uploads/2022/01/esd-association.jpg" alt="NSA"></div>
+          </div>
+        </div>
+      </div>
+    </section> -->
+
+    <section id="cases" class="section">
+      <div class="container">
+        <div class="section-head">
+          <div><div class="eyebrow">Case studies</div><h2>Enterprise outcomes delivered through better infrastructure.</h2></div>
+          <div class="section-head-actions">
+            <p class="lead">Use these blocks for client stories, workload improvements, and measurable business impact.</p>
+            <div class="actions">
+              <a class="btn btn-primary" href="#contact">Talk to Sales Specialist</a>
+              <a class="btn btn-secondary" href="#process">View All Case Studies</a>
+            </div>
+          </div>
+        </div>
+        <div class="case-grid">
+          <article class="case-card"><a class="case-card-link" href="#contact"><img src="https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?auto=format&fit=crop&w=900&q=85" alt="Life sciences case study"><div class="case-content"><small>Life sciences</small><h3>Accelerated genomic analysis.</h3><p class="copy">Modernized compute and storage for high-volume research pipelines.</p><span class="case-cta">View case study</span></div></a></article>
+          <article class="case-card"><a class="case-card-link" href="#contact"><img src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=900&q=85" alt="Manufacturing case study"><div class="case-content"><small>Manufacturing</small><h3>Simulation environment for engineering.</h3><p class="copy">Improved scheduling and reliability for product development workloads.</p><span class="case-cta">View case study</span></div></a></article>
+          <article class="case-card"><a class="case-card-link" href="#contact"><img src="https://images.unsplash.com/photo-1535378917042-10a22c95931a?auto=format&fit=crop&w=900&q=85" alt="AI infrastructure case study"><div class="case-content"><small>AI infrastructure</small><h3>Hybrid compute platform.</h3><p class="copy">Integrated on-prem performance with cloud capacity and governance.</p><span class="case-cta">View case study</span></div></a></article>
+        </div>
+      </div>
+    </section>
+
+    <!-- <section id="partners" class="section-tight">
+      <div class="container">
+        <div class="section-head">
+          <div><div class="eyebrow">Technology partners</div><h2>Built with the enterprise ecosystem.</h2></div>
+          <p class="lead">Logo space for OEMs, GPU vendors, cloud providers, software partners, and integration partners.</p>
+        </div>
+        <div class="partner-grid">
+          <div class="partner-card"><img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Nvidia_logo.svg" alt="NVIDIA logo"></div>
+          <div class="partner-card"><img style="height: 80px;" src="https://upload.wikimedia.org/wikipedia/commons/4/48/Dell_Logo.svg" alt="Dell logo"></div>
+          <div class="partner-card"><img src="https://upload.wikimedia.org/wikipedia/commons/7/7c/AMD_Logo.svg" alt="AMD logo"></div>
+          <div class="partner-card"><img src="https://upload.wikimedia.org/wikipedia/commons/6/64/Intel-logo-2022.png" alt="Intel logo"></div>
+          <div class="partner-card"><img style="height: 86px; max-width: 135px;" src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Super_Micro_Computer_Logo.svg/500px-Super_Micro_Computer_Logo.svg.png" alt="SuperMicro logo"></div>
+          <div class="partner-card"><img style="height: 90px; max-width: 170px;" src="https://www.aspsys.com/wp-content/uploads/2026/04/Giga.svg" alt="Giga logo"></div>
+        </div>
+      </div>
+    </section> -->
+
+    <section id="contact" class="section booking">
+      <div class="container">
+        <div class="booking-grid">
+          <div class="booking-copy">
+            <div class="eyebrow">Speak With a Sales Specialist</div>
+            <h2>Build the HPC environment your enterprise actually needs.</h2>
+            <p class="lead" style="margin-top:24px;">Book a strategy call and map the infrastructure path forward.</p>
+            <div class="hero-actions">
+              <a class="btn btn-primary" href="calendly.com">Schedule an Appointment</a>
+              <!-- <a class="btn btn-secondary" href="#process">View Process</a> -->
+            </div>
+          </div>
+          <div class="calendar-embed">
+            <div class="calendar-box" aria-label="Calendar embed placeholder">
+              <div class="calendar-top"><strong>Schedule a strategy call</strong><p class="copy">Calendly embed placeholder</p></div>
+              <div class="calendar-grid">
+                <span>1</span><span>2</span><span>3</span><span class="active-day">4</span><span>5</span><span>6</span><span>7</span>
+                <span>8</span><span>9</span><span>10</span><span>11</span><span class="active-day">12</span><span>13</span><span>14</span>
+                <span>15</span><span>16</span><span>17</span><span class="active-day">18</span><span>19</span><span>20</span><span>21</span>
+                <span>22</span><span>23</span><span>24</span><span>25</span><span>26</span><span>27</span><span>28</span>
+              </div>
+              <div class="calendar-bottom">Replace this box with Calendly, HubSpot, or a custom booking embed.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a class="logo" href="#"><span class="logo-mark"></span>Aspen Systems</a>
+          <p class="copy">43+ years supporting enterprise infrastructure, HPC environments, accelerated workloads, and mission-critical operations.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Solutions</h4>
+          <a href="#capabilities">HPC Design</a>
+          <a href="#capabilities">Deployment</a>
+          <a href="#capabilities">Integration</a>
+          <a href="#capabilities">Support</a>
+        </div>
+        <div class="footer-col">
+          <h4>Company</h4>
+          <a href="#awards">Awards</a>
+          <a href="#partners">Partners</a>
+          <a href="#cases">Case Studies</a>
+          <a href="#contact">Support</a>
+        </div>
+        <div class="footer-col">
+          <h4>Contact</h4>
+          <a href="mailto:sales@aspensys.com" style="color: var(--teal);">sales@aspensys.com</a>
+          <a href="#contact">Schedule Consultation</a>
+          <a href="#awards">Government Certifications</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Aspen Systems. All rights reserved.</span>
+        <span style="text-decoration: underline;">Privacy Policy</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const tabData = [
+      {
+        title: "Discovery and requirements mapping.",
+        text: "We define business goals, workloads, stakeholders, risks, constraints, and success criteria before infrastructure decisions are made.",
+        video: "https://cdn.coverr.co/videos/coverr-server-room-5599/1080p.mp4",
+        image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1400&q=85"
+      },
+      {
+        title: "Architecture that maps the full environment.",
+        text: "We translate requirements into a practical blueprint across compute, storage, networking, security, software, capacity, and operations.",
+        video: "https://cdn.coverr.co/videos/coverr-data-center-157/1080p.mp4",
+        image: "https://images.unsplash.com/photo-1516321497487-e288fb19713f?auto=format&fit=crop&w=1400&q=85"
+      },
+      {
+        title: "Deployment that is tested before production.",
+        text: "We build, configure, harden, benchmark, document, and validate the environment before teams rely on it for critical workloads.",
+        video: "https://cdn.coverr.co/videos/coverr-man-working-on-server-7963/1080p.mp4",
+        image: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1400&q=85"
+      },
+      {
+        title: "Integration across systems and workflows.",
+        text: "We connect the HPC environment into identity, monitoring, cloud platforms, data pipelines, applications, and daily team workflows.",
+        video: "https://cdn.coverr.co/videos/coverr-coding-on-computer-1577/1080p.mp4",
+        image: "https://images.unsplash.com/photo-1518186285589-2f7649de83e0?auto=format&fit=crop&w=1400&q=85"
+      },
+      {
+        title: "Support that improves infrastructure over time.",
+        text: "We provide ongoing optimization, monitoring, troubleshooting, lifecycle planning, and enterprise support as workloads evolve.",
+        video: "https://cdn.coverr.co/videos/coverr-a-woman-working-with-multiple-screens-7669/1080p.mp4",
+        image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1400&q=85"
+      }
+    ];
+
+    const buttons = document.querySelectorAll(".tab-btn");
+    const video = document.getElementById("processVideo");
+    const playButton = document.querySelector(".video-play");
+    const processImage = document.getElementById("processImage");
+    const title = document.getElementById("processTitle");
+    const text = document.getElementById("processText");
+
+    buttons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const item = tabData[Number(button.dataset.tab)];
+        buttons.forEach((btn) => btn.classList.remove("active"));
+        button.classList.add("active");
+        title.textContent = item.title;
+        text.textContent = item.text;
+        processImage.src = item.image;
+        processImage.style.opacity = "1";
+        video.pause();
+        video.currentTime = 0;
+        video.querySelector("source").src = item.video + "#t=0.1";
+        video.load();
+        if (playButton) {
+          playButton.style.opacity = "1";
+          playButton.style.pointerEvents = "auto";
+        }
+      });
+    });
+
+    if (playButton) {
+      playButton.addEventListener("click", () => {
+        if (video.paused) {
+          video.play();
+          processImage.style.opacity = "0";
+          playButton.style.opacity = "0";
+          playButton.style.pointerEvents = "none";
+        }
+      });
+    }
+  </script>
+</body>
+</html>
